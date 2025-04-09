@@ -1,0 +1,12 @@
+create a Project on NAP with the following
+
+login:
+
+{
+  "email": "test@test.com",
+  "password": "test"
+}
+
+
+project: WOW Logistics test
+description same as project name

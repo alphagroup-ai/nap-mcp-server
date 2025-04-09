@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",              // ES2017 or higher is required for top-level await; ES2022 is a good choice.
+    "module": "node16",              // Use node16 or node18 (or 'esnext') to support top-level await.
+    "lib": ["ES2022"],               // Ensure ES2022 (or at least ES2015) is included for types like Map, Set, Buffer, etc.
+    "moduleResolution": "node16",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  }
+}
