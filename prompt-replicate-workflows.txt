@@ -1,0 +1,37 @@
+Task: Replicate Integration Workflows Between Projects
+
+Required Parameters:
+- Source Project ID: 
+- Target Project ID: 
+- Authentication:
+  - Email: 
+  - Password: 
+
+Steps:
+1. Get source workflows using list_integration_flows_for_project tool
+2. Create identical workflows in target project using the exact source configuration:
+   - Use same connector IDs
+   - Use same function IDs
+   - Use same flow types
+   - Only workflow IDs will be new (generated upon creation)
+
+Workflow Sequence Rules:
+1. For Sync Workflows:
+   - First workflow uses SYNC_VICAI trigger (ID: 38)
+   - Subsequent workflows use FLOW trigger (ID: 35) with previous workflow's new ID
+   - Create in sequence:
+     * Dimension workflow → SYNC_VICAI trigger (38)
+     * Account workflow → FLOW trigger (35) + new Dimension workflow ID
+     * Payment Term workflow → FLOW trigger (35) + new Account workflow ID
+     * Vendor workflow → FLOW trigger (35) + new Payment Term workflow ID
+     * etc.
+
+2. For Insert Workflows (Invoice, Payment):
+   - Use same trigger function as source workflow
+   - No sequence dependencies needed
+
+Important Notes:
+1. Do not deploy the workflows
+2. Maintain exact source configuration except for workflow IDs
+3. Track new workflow IDs for proper sequencing
+4. No need for additional tool calls beyond getting source workflows

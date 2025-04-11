@@ -13,6 +13,7 @@ const GET_FLOW_TYPES_URL = "http://localhost:3001/parametrics/flow-types";
 const GET_CONNECTORS_LIST_CONCISE_URL = "http://localhost:3001/connectors/list";
 const GET_CONNECTORS_FUNCTIONS_URL = "http://localhost:3001/connectors/functions";
 const CREATE_WORKFLOW_URL = "http://localhost:3001/integration-flows";
+const GET_INTEGRATION_FLOW_URL = "http://localhost:3001/integration-flows";
 // Add logging helper using console.error for stderr logging
 const log = (level, message, data) => {
     const logData = {
@@ -440,6 +441,52 @@ server.tool("add-connector-to-project", {
                 content: [{
                         type: "text",
                         text: `Cannot add connector to project: ${axiosError.response?.status} - ${axiosError.message}`
+                    }]
+            };
+        }
+        return {
+            content: [{
+                    type: "text",
+                    text: `An error occurred: ${error instanceof Error ? error.message : String(error)}`
+                }]
+        };
+    }
+});
+// ------------ Integration Flows ------------
+server.tool("list-integration-flows-for-project", {
+    email: z.string(),
+    password: z.string(),
+    projectId: z.number().describe("The Id of the project to list the integration flows for")
+}, async ({ email, password, projectId }) => {
+    try {
+        const { accessToken, organizationId } = await login(email, password);
+        const { data: integrationFlows } = await axios.get(GET_INTEGRATION_FLOW_URL, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
+            },
+            params: {
+                project_id: projectId,
+                page: 0,
+                perPage: 999,
+                order: "asc",
+                orderBy: "updated_at"
+            }
+        });
+        return {
+            content: [{
+                    type: "text",
+                    text: JSON.stringify(integrationFlows, null, 2)
+                }]
+        };
+    }
+    catch (error) {
+        if (axios.isAxiosError(error)) {
+            const axiosError = error;
+            return {
+                content: [{
+                        type: "text",
+                        text: `Cannot get list of integration flows for project: ${axiosError.response?.status} - ${axiosError.message}`
                     }]
             };
         }
