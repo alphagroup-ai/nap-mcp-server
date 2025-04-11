@@ -1,0 +1,85 @@
+You are provided with a *System Integration Matrix Document* that outlines the configuration for integrating two systems: an ERP and an AP source. We use a platform called **NAP** to automate this integration process.
+
+---
+
+**Authentication:**
+
+To log in and perform actions, use the following credentials:
+
+- **Email:** test@test.com  
+- **Password:** test
+
+---
+
+**Your task is to automate the following steps based on the contents of the document:**
+
+1. **Create a Project** in NAP.
+2. **Add the ERP Application** to the Project, including all necessary credentials.
+3. **Add the AP Source Application** to the Project, including all necessary credentials.
+4. **Add Clients** to the Project along with their respective credentials as specified in the document.
+5. **Create Workflows** using the integration matrix.
+
+**Workflow Direction Rules:**
+- If the type is **"Sync"**, data flows from the **ERP** to the **AP Source**.
+- If the type is **"Push"**, data flows from the **AP Source** to the **ERP**.
+
+**Workflow Sequence Rules:**
+- For sync workflows, they must be created in sequence where each workflow triggers after the previous one completes
+- First workflow in the sequence uses trigger function "SYNC_VICAI - Sync MasterData" (ID: 38)
+- Subsequent workflows use trigger function "FLOW" (ID: 35) and must reference the previous workflow's ID
+- Example sequence setup:
+  1. First workflow: Uses SYNC_VICAI trigger (ID: 38)
+  2. Second workflow: Uses FLOW trigger (ID: 35) with previous workflow's ID
+  3. Third workflow: Uses FLOW trigger (ID: 35) with second workflow's ID
+  And so on...
+- For Insert flows use appropriate Trigger based on the flow e.g Insert Invoice will have a different Trigger, Insert Payment will have a different Trigger.
+
+---
+
+**Note:**  
+If any required information is missing from the document, ask for clarification. I’ll be available to provide the missing inputs.
+
+Document:
+
+ERP: Coupa
+AP Source: VIC
+-------------------------
+Application Credentials:
+
+VIC:
+vic_base_url: https://api.no.stage.vic.ai
+email_errors: “ “
+
+Coupa:
+url: https://vic-ai-usa-coupalink-demo.coupacloud.com 
+scope: core.accounting.read core.accounting.write core.approval.configuration.read core.approval.configuration.write core.approval.read core.approval.write core.budget.read core.budget.write core.business_entity.read core.business_entity.write core.catalog.read core.catalog.write core.comment.read core.comment.write core.common.read core.common.write core.contract.read core.contract.write core.contracts_template.read core.contracts_template.write core.easy_form_response.approval.write core.easy_form_response.read core.easy_form_response.write core.easy_form.read core.easy_form.write core.expense.read core.expense.secure.read core.expense.secure.write core.expense.write core.financial_counterparty.read core.financial_counterparty.write core.global_navigation.read core.integration.read core.integration.write core.inventory.adjustment.read core.inventory.adjustment.write core.inventory.asn.read core.inventory.asn.write core.inventory.balance.read core.inventory.common.read core.inventory.common.write core.inventory.consumption.read core.inventory.consumption.write core.inventory.cycle_counts.read core.inventory.cycle_counts.write core.inventory.pick_list.read core.inventory.pick_list.write core.inventory.receiving.read core.inventory.receiving.write core.inventory.return_to_supplier.read core.inventory.return_to_supplier.write core.inventory.transaction.read core.inventory.transfer.read core.inventory.transfer.write core.invoice.approval.bypass core.invoice.approval.write core.invoice.create core.invoice.delete core.invoice.read core.invoice.write core.item.read core.item.write core.legal_entity.read core.legal_entity.write core.notifications_summary.read core.notifications_summary.write core.object_translations.read core.object_translations.write core.order_header_confirmations.read core.order_header_confirmations.write core.order_pad.read core.order_pad.write core.pay.charges.read core.pay.charges.write core.pay.payment_accounts.read core.pay.payments.read core.pay.payments.write core.pay.statements.read core.pay.statements.write core.pay.virtual_cards.read core.pay.virtual_cards.write core.payables.allocations.read core.payables.allocations.write core.payables.expense.read core.payables.expense.write core.payables.external.read core.payables.external.write core.payables.invoice.read core.payables.invoice.write core.payables.order.read core.payables.order.write core.project.read core.project.write core.punchout_site.read core.punchout_site.write core.purchase_order_change.read core.purchase_order_change.write core.purchase_order.read core.purchase_order.write core.requisition.read core.requisition.write core.revision_record.read core.sourcing.pending_supplier.read core.sourcing.pending_supplier.write core.sourcing.read core.sourcing.response.award.write core.sourcing.response.read core.sourcing.response.write core.sourcing.write core.supplier_information_sites.read core.supplier_information_sites.write core.supplier_information_tax_registrations.delete core.supplier_information_tax_registrations.read core.supplier_information_tax_registrations.write core.supplier_sharing_settings.read core.supplier_sharing_settings.write core.supplier_sites.read core.supplier_sites.write core.supplier.read core.supplier.risk_aware.read core.supplier.risk_aware.write core.supplier.write core.translation.read core.translation.write core.uom.read core.uom.write core.user_group.read core.user_group.write core.user.read core.user.write email login offline_access openid profile travel_booking.common.read travel_booking.search.write travel_booking.team.read travel_booking.team.write travel_booking.trip.read travel_booking.trip.write travel_booking.user.read travel_booking.user.write treasury.cash_management.delete treasury.cash_management.read treasury.cash_management.write treasury.financial_instruments.money_market_fund.write treasury.financial_instruments.read
+
+----------------
+Client Credentials:
+
+Name: COUPA-Remitly test
+Base_url: https://events.dev.alphagroup.ai
+
+VIC:
+VIC_Client_id: 1ZDQxbLPkHBi4Xt5MRubCjzfk4WCiWP4
+VIC_client_secret: 1ZDQxbLPkHBi4Xt5MRubCjzfk4WCiWP4
+retrieve_po: true
+
+Coupa:
+client_id: 99402468dedc1c191b5859550840c892
+client_secret: 0c6c4538914d30abf4c607a475cee8907c73fa34370f4e32b0ef9f027a04a3dc
+
+----------------------------------
+
+Sync ERP To Vic:
+1. Sync Accounts
+2. Sync Dimensions
+3. Sync Vendors
+4. Sync Payment Terms
+5. Sync Tax Codes
+6. Sync PO
+
+----------------------------------
+Push Vic to ERP:
+
+1. Insert Invoice
