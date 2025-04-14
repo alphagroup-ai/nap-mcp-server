@@ -1,27 +1,19 @@
 # NAP MCP Server
 
-This is a Model Context Protocol (MCP) server implementation for the NAP API. It provides a standardized way to interact with NAP API endpoints through MCP tools and resources.
+This is a Model Context Protocol (MCP) server implementation for the NAP API. It provides a standardized way to interact with NAP API endpoints through MCP tools and resources - through prompts
 
 ## Features
 
-- Authentication with email/password
-- Project management
-- Resource access
-- Tool execution
-- Secure token handling
-
-## Prerequisites
-
-- Node.js 18.x or higher
-- NPM 9.x or higher
-- Running NAP API instance
+- Create Project, Add Applications, Add Clients & Create Workflows through MCP.
+- Export Workflows from a project & Add to different Project (Import/Export Workflows).
+- Create Workflows for a project using Prompts.
 
 ## Installation
 
 1. Clone the repository
 2. Install dependencies:
 ```bash
-npm install
+pnpm install
 ```
 
 3. Copy `.env.example` to `.env` and update the configuration:
@@ -33,53 +25,33 @@ cp .env.example .env
 
 ## Development
 
-Start the development server:
-```bash
-npm run dev
+1. Navigate to File > Preferences > Cursor Settings
+![Settings](./assets/MCP-1.png)
+
+2. Navigate to MCP and create a new Server
+
+3. In the config, Paste the following:
+
+```
+"nap-mcp-server": {
+      "command": "node",
+      "args": ["./nap-mcp-server/index.js"]
+    }
 ```
 
-## Build
+![How to add new Server](./assets/mcp-server-setup.gif)
 
-Build the project:
-```bash
-npm run build
-```
+--------------
 
-## Production
+Note: The server contains path to the index.js file, so if any changes are made by dev, make sure to run ``` npx tsc``` to compile the javascript code
 
-Start the production server:
-```bash
-npm start
-```
+## Common Usage
 
-## Available MCP Tools
+Below Video Demonstrates how to develop using MCP:
 
-### Authentication
+1. Import/Export Project:
+--> Utilize the prompts mentioned in ```prompt-replicate-workflows.txt``` and edit the prompt based on the your requirements.
 
-- `login`: Authenticate with email and password
-  - Parameters:
-    - email: string
-    - password: string
+2. Make sure Agent mode is enabled (if not available, update cursor)
+![Import/Export workflows using MCP](./assets/MCP-DEMO.gif)
 
-### Projects
-
-- `list-projects`: Get all projects (requires authentication)
-  - No parameters required
-
-## Adding New Tools
-
-To add new tools, modify `src/server.ts` and add new tool definitions following the MCP protocol specification.
-
-## Security
-
-- All endpoints require authentication via JWT tokens
-- Tokens are automatically managed by the MCP server
-- Sensitive data is never exposed in responses
-
-## Contributing
-
-1. Fork the repository
-2. Create your feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a new Pull Request 

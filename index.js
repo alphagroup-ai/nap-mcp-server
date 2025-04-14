@@ -3,17 +3,20 @@ import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
 import { z } from "zod";
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
-const LOGIN_URL = "http://localhost:3001/login";
-const CREATE_PROJECT_URL = "http://localhost:3001/projects";
-const GET_CONNECTORS_URL = "http://localhost:3001/connectors";
-const ADD_CONNECTOR_TO_PROJECT_URL = "http://localhost:3001/project-applications/";
-const GET_PROJECT_CONNECTOR_CLIENT_CREDENTIALS_URL = `http://localhost:3001/projects/{id}/applications-credentials`;
-const CREATE_IMPLEMENTATION_URL = "http://localhost:3001/implementations";
-const GET_FLOW_TYPES_URL = "http://localhost:3001/parametrics/flow-types";
-const GET_CONNECTORS_LIST_CONCISE_URL = "http://localhost:3001/connectors/list";
-const GET_CONNECTORS_FUNCTIONS_URL = "http://localhost:3001/connectors/functions";
-const CREATE_WORKFLOW_URL = "http://localhost:3001/integration-flows";
-const GET_INTEGRATION_FLOW_URL = "http://localhost:3001/integration-flows";
+import dotenv from 'dotenv';
+dotenv.config();
+const NAP_API_URL = "https://nap-api.dev.alphagroup.ai";
+const LOGIN_URL = `${NAP_API_URL}/login`;
+const CREATE_PROJECT_URL = `${NAP_API_URL}/projects`;
+const GET_CONNECTORS_URL = `${NAP_API_URL}/connectors`;
+const ADD_CONNECTOR_TO_PROJECT_URL = `${NAP_API_URL}/project-applications/`;
+const GET_PROJECT_CONNECTOR_CLIENT_CREDENTIALS_URL = `${NAP_API_URL}/projects/{id}/applications-credentials`;
+const CREATE_IMPLEMENTATION_URL = `${NAP_API_URL}/implementations`;
+const GET_FLOW_TYPES_URL = `${NAP_API_URL}/parametrics/flow-types`;
+const GET_CONNECTORS_LIST_CONCISE_URL = `${NAP_API_URL}/connectors/list`;
+const GET_CONNECTORS_FUNCTIONS_URL = `${NAP_API_URL}/connectors/functions`;
+const CREATE_WORKFLOW_URL = `${NAP_API_URL}/integration-flows`;
+const GET_INTEGRATION_FLOW_URL = `${NAP_API_URL}/integration-flows`;
 // Add logging helper using console.error for stderr logging
 const log = (level, message, data) => {
     const logData = {
